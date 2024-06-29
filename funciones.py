@@ -34,3 +34,32 @@ def sumar_copias_disponibles(session, titulo):
     else:
         print(f"No se encontraron libros con el título '{titulo}'.")
         return 0
+
+#-----------export--------------
+
+def exportar_prestaciones(session):
+    prestaciones = session.query(Prestacion).all()
+    df = pd.DataFrame(columns=["ID_CLIENTE", "ID_LIBRO", "ID_PRESTACION", "FECHA_PRESTACION"])
+    for prestacion in prestaciones:
+        nueva_fila = (prestacion.id_cliente, prestacion.id_libro, prestacion.id, prestacion.fecha_prest, prestacion.calcular_dev())
+        datos = pd.DataFrame(data=[nueva_fila], columns=["ID_CLIENTE", "ID_LIBRO", "ID_PRESTACION", "FECHA_PRESTACION", "FECHA_DEVOLUCION"])
+        df = pd.concat([df, datos], ignore_index=True)
+    df.to_csv("prestaciones.csv", index=False, encoding="latin1")
+
+def exportar_clientes(session):
+    clientes = session.query(Cliente).all()
+    df = pd.DataFrame(columns=["ID", "CUIL", "NOMBRE", "EDAD"])
+    for cliente in clientes:
+        nueva_fila = (cliente.id, cliente.cuil, cliente.nombre, cliente.edad)
+        datos = pd.DataFrame(data=[nueva_fila], columns=["ID", "CUIL", "NOMBRE", "EDAD"])
+        df = pd.concat([df, datos], ignore_index=True)
+    df.to_csv("clientes.csv", index=False, encoding="latin1")
+
+def exportar_libros(session):
+    libros = session.query(Libro).all()
+    df = pd.DataFrame(columns=["ID", "TITULO", "AUTOR", "RESUMEN", "COPIAS_DISPONIBLES"])
+    for libro in libros:
+        nueva_fila = (libro.id, libro.titulo, libro.autor, libro.resumen, libro.copias_disponibles)
+        datos = pd.DataFrame(data=[nueva_fila], columns=["ID", "TITULO", "AUTOR", "RESUMEN", "COPIAS_DISPONIBLES"])
+        df = pd.concat([df, datos], ignore_index=True)
+    df.to_csv("libros.csv", index=False, encoding="latin1")
