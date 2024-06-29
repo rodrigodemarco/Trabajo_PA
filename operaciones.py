@@ -46,3 +46,9 @@ mostrar_vencidos(session)
 #Recuperamos el libro del alquiler vencido
 devolver_libro(session, prest_2)
 sumar_copias_disponibles(session, "1Q84")
+
+#Exportamos a un csv
+exportar_prestaciones(session)
+exportar_clientes(session)
+exportar_libros(session)
+
